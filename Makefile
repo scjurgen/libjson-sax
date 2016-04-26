@@ -13,7 +13,7 @@ MAJOR = 1
 MINOR = 0
 MICRO = 0
 
-NAME = json
+NAME = json-sax
 A_TARGETS = lib$(NAME).a
 BIN_TARGETS = $(NAME)lint
 PC_TARGET = lib$(NAME).pc

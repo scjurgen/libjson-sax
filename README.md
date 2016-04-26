@@ -1,10 +1,10 @@
-libjson - simple and efficient json parser and printer in C
+libjson-sax - simple and efficient json parser and printer in C
 ===========================================================
 
 Introduction
 ------------
 
-libjson is a simple library without any dependancies to parse and pretty print
+libjson-sax is a simple library without any dependencies to parse and pretty print
 the JSON format ([RFC 4627](https://www.ietf.org/rfc/rfc4627.txt)). The JSON format is a concise and structured data
 format.
 
@@ -22,7 +22,7 @@ Features
 * Optional comments: in YAML/python style and C style.
 * Optional user defined allocation functions.
 
-libjson parser is an interruptible handcoded state parse. the parser takes
+libjson-sax parser is an interruptible handcoded state parse. the parser takes
 character or string as input. Since it's interruptible, it's up to the
 user to feed the stream to the parser, which permits complete flexibility
 as to whether the data is coming from a pipe, a network socket, a file on disk,
@@ -71,52 +71,52 @@ The Parser API
 
 The parser API is really simple, totaling only 5 API calls:
 
- * json\_parser\_init
- * json\_parser\_char
- * json\_parser\_string
- * json\_parser\_is\_done
- * json\_parser\_free
+ * json-sax\_parser\_init
+ * json-sax\_parser\_char
+ * json-sax\_parser\_string
+ * json-sax\_parser\_is\_done
+ * json-sax\_parser\_free
 
-json\_parser\_init initializes a new parser context from a parser config and
+json-sax\_parser\_init initializes a new parser context from a parser config and
 takes a callback + userdata. This callback function is used everything the
 parser need to communicate a type and value to the client side of the library.
 
-json\_parser\_char take one character and inject it in the parser. on parsing
+json-sax\_parser\_char take one character and inject it in the parser. on parsing
 success it will return a 0 value, but on parsing error it returns a parsing
 error that represents the type of the error encounters. see JSON\_ERROR\_\*
 for the full set of return values.
 
-json\_parser\_string is similar to json\_parser\_char except that it takes a string
+json-sax\_parser\_string is similar to json-sax\_parser\_char except that it takes a string
 and a length.  it also returns the number of character processed, which is
 useful when an parser error happened in the stream to pinpoint where.
 
-json\_parser\_is\_done permits to test whetever or not the parser is in a
+json-sax\_parser\_is\_done permits to test whetever or not the parser is in a
 terminated state. it involves not beeing into any structure.
 
-json\_parser\_free is the opposite of init, it just free the allocated structure.
+json-sax\_parser\_free is the opposite of init, it just free the allocated structure.
 
 The Printer API
 ---------------
 
 the printer API is simple too:
 
- * json\_printer\_init
- * json\_printer\_free
- * json\_printer\_pretty
- * json\_printer\_raw
+ * json-sax\_printer\_init
+ * json-sax\_printer\_free
+ * json-sax\_printer\_pretty
+ * json-sax\_printer\_raw
 
-json\_printer\_init initialise a printing context and takes a callback + userdata
+json-sax\_printer\_init initialise a printing context and takes a callback + userdata
 that will be called for every character that the printer wants to output. the
 caller can have the printer callback redirect to anything it wants.
 
-json\_printer\_free is the opposite of init
+json-sax\_printer\_free is the opposite of init
 
-json\_printer\_raw takes a json type and an optional data and length value
+json-sax\_printer\_raw takes a json type and an optional data and length value
 depending on the type. it's up to the caller to verify that the order of type
 are JSON-compliant, otherwise the generated document won't be able to be parsed
 again.
 
-json\_printer\_pretty works like json\_printer\_raw but is targetted for human
+json-sax\_printer\_pretty works like json-sax\_printer\_raw but is targetted for human
 reading by appending newlines and spaces
 
 Jsonlint utility program

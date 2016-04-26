@@ -3,8 +3,8 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: libjson
+Name: libjson-sax
 Description: Library supporting JSON format
 Version: @LIBJSON_VER_MAJOR@.@LIBJSON_VER_MINOR@
-Libs: -L${libdir} -ljson
+Libs: -L${libdir} -ljson-sax
 Cflags: -I${includedir}
