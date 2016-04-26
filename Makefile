@@ -13,12 +13,13 @@ MAJOR = 1
 MINOR = 0
 MICRO = 0
 
-NAME = json-sax
-A_TARGETS = lib$(NAME).a
+NAME = json
+LIBNAME = json-sax
+A_TARGETS = lib$(LIBNAME).a
 BIN_TARGETS = $(NAME)lint
-PC_TARGET = lib$(NAME).pc
-SO_LINKS = lib$(NAME).so lib$(NAME).so.$(MAJOR) lib$(NAME).so.$(MAJOR).$(MINOR)
-SO_FILE = lib$(NAME).so.$(MAJOR).$(MINOR).$(MICRO)
+PC_TARGET = lib$(LIBNAME).pc
+SO_LINKS = lib$(LIBNAME).so lib$(LIBNAME).so.$(MAJOR) lib$(LIBNAME).so.$(MAJOR).$(MINOR)
+SO_FILE = lib$(LIBNAME).so.$(MAJOR).$(MINOR).$(MICRO)
 HEADERS = $(NAME).h
 
 PREFIX ?= /usr
@@ -30,26 +31,26 @@ uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
 ifeq ($(uname_S),Darwin)
 SONAME=
 else
-SONAME=-Wl,-soname -Wl,lib$(NAME).so.$(MAJOR).$(MINOR).$(MICRO)
+SONAME=-Wl,-soname -Wl,lib$(LIBNAME).so.$(MAJOR).$(MINOR).$(MICRO)
 endif
 
 TARGETS = $(A_TARGETS) $(SO_FILE) $(SO_LINKS) $(BIN_TARGETS) $(PC_TARGET)
 
 all: $(TARGETS)
 
-lib$(NAME).a: $(NAME).o
+lib$(LIBNAME).a: $(NAME).o
 	$(AR) rc $@ $+
 
-lib$(NAME).so: lib$(NAME).so.$(MAJOR)
+lib$(LIBNAME).so: lib$(LIBNAME).so.$(MAJOR)
 	ln -sf $< $@
 
-lib$(NAME).so.$(MAJOR): lib$(NAME).so.$(MAJOR).$(MINOR)
+lib$(LIBNAME).so.$(MAJOR): lib$(LIBNAME).so.$(MAJOR).$(MINOR)
 	ln -sf $< $@
 
-lib$(NAME).so.$(MAJOR).$(MINOR): lib$(NAME).so.$(MAJOR).$(MINOR).$(MICRO)
+lib$(LIBNAME).so.$(MAJOR).$(MINOR): lib$(LIBNAME).so.$(MAJOR).$(MINOR).$(MICRO)
 	ln -sf $< $@
 
-lib$(NAME).so.$(MAJOR).$(MINOR).$(MICRO): $(NAME).o
+lib$(LIBNAME).so.$(MAJOR).$(MINOR).$(MICRO): $(NAME).o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(SONAME) $(SHLIB_CFLAGS) -o $@ $^
 
 $(NAME)lint: $(NAME)lint.o $(NAME).o
@@ -58,8 +59,8 @@ $(NAME)lint: $(NAME)lint.o $(NAME).o
 %.o: %.c %.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: lib$(NAME).pc
-lib$(NAME).pc: lib$(NAME).pc.in
+.PHONY: lib$(LIBNAME).pc
+lib$(LIBNAME).pc: lib$(NAME).pc.in
 	sed -e 's;@PREFIX@;$(PREFIX);' -e 's;@LIBJSON_VER_MAJOR@;$(MAJOR);' -e 's;@LIBJSON_VER_MINOR@;$(MINOR);' < $< > $@
 
 .PHONY: tests clean install install-bin install-lib

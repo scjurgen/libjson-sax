@@ -9,7 +9,7 @@ Homepage: http://projects.snarc.org/libjson-sax/
 Package: libjson-sax-dev
 Section: libdevel
 Architecture: any
-Depends: libjson-sax (= ${binary:Version})
+Depends: libjson (= ${binary:Version})
 Description: Development files for libjson-sax
  This package contains the header files and static library needed to
  compile applications that use confuse.
